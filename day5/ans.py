@@ -54,6 +54,8 @@ for line in lines.split("\n"):
     arr = list(map(int,line.split(",")))
     ans1 += score(arr,d)
     if score(arr,d)==0:
+        print(toposort(arr,d))
+        print(arrange(arr,d))
         ans2 += toposort(arr,d)[len(arr)//2]
         ans3 += arrange(arr,d)[len(arr)//2]
 
