@@ -22,12 +22,13 @@ idx = 0
 def valid(i,j,m,n):
     return 0<=i<m and 0<=j<n
 
-while valid(posx,posy,m,n) and valid(posx + dirx[idx], posy + diry[idx], m, n):
+while True:
+    st.add((posx,posy))
+    if not valid(posx + dirx[idx], posy + diry[idx], m, n):
+        break
     if grid[posx+dirx[idx]][posy+diry[idx]]!='#':
-        st.add((posx,posy))
         posx += dirx[idx]
         posy += diry[idx]
     else:
         idx = (idx+1)%4
-st.add((posx,posy))
 print(len(st))

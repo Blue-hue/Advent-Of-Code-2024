@@ -1,50 +1,44 @@
+import time
+
+start = time.time()
+
 grid = [list(x) for x in open(r"day6\\input.txt", "r").read().split('\n')]
-m = len(grid)
-n = len(grid[0])
-posx = posy = 0
 
-found = False
-for i in range(m):
-    for j in range(n):
-        if grid[i][j] == '^':
-            posx = i
-            posy = j
-            found = True
+rows = len(grid)
+cols = len(grid[0])
+
+for r in range(rows):
+    for c in range(cols):
+        if grid[r][c] == "^":
             break
-    if found:
-        break
+    else:
+        continue
+    break
 
-idx = 0
-sr, sc = posx, posy
+def loops(grid, r, c):
+    dr = -1
+    dc = 0
+    seen = set()
+    while True:
+        seen.add((r, c, dr, dc))
+        if r + dr < 0 or r + dr >= rows or c + dc < 0 or c + dc >= cols: return False
+        if grid[r + dr][c + dc] == "#":
+            dc, dr = -dr, dc
+        else:
+            r += dr
+            c += dc
+        if (r, c, dr, dc) in seen:
+            return True
 
-def valid(i, j, m, n):
-    return 0 <= i < m and 0 <= j < n
+count = 0
 
-ans = 0
-for o_x in range(m):
-    for o_y in range(n):
-        posx, posy = sr, sc
-        idx = 0
-        SEEN = set()
-        SEEN_POS = set()
+for cr in range(rows):
+    for cc in range(cols):
+        if grid[cr][cc] == ".":
+            grid[cr][cc] = "#"
+            if loops(grid, r, c):
+                count += 1
+            grid[cr][cc] = "."
 
-        while True:
-            if (posx, posy, idx) in SEEN:
-                ans += 1
-                break
-
-            SEEN.add((posx, posy, idx))
-
-            dr, dc = [(-1, 0), (0, 1), (1, 0), (0, -1)][idx]
-            nextx = posx + dr
-            nexty = posy + dc
-
-            if not (0 <= nextx < m and 0 <= nexty < n):
-                break
-
-            if grid[nextx][nexty] == '#' or (nextx == o_x and nexty == o_y):
-                idx = (idx + 1) % 4
-            else:
-                posx, posy = nextx, nexty
-
-print(ans)
+print(count)
+print(time.time()-start)
