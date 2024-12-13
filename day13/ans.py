@@ -4,10 +4,9 @@ import re
 def solve_linear_system(a, b, p):
     ans = 0
     A = np.array([a,b]).T
-    P = np.array([p]).T
-    R = np.linalg.solve(A, P)
-    x = round(R[0,0])
-    y = round(R[1,0])
+    R = np.linalg.solve(A, p)
+    x = round(R[0])
+    y = round(R[1])
     if x*a[0] + y*b[0] == p[0] and x*a[1] + y*b[1] == p[1]:
         ans = (3*x + y)
     return ans
